@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Telegram WebApp</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Привет из WebApp!</h1>
+        <p id="user-data">Загрузка данных пользователя...</p>
+        <button onclick="showAlert()">Показать alert</button>
+        <button onclick="closeApp()">Закрыть приложение</button>
+    </div>
+
+    <script>
+        // Инициализация WebApp
+        const tg = window.Telegram.WebApp;
+        
+        // Показываем кнопку "Назад" в интерфейсе Telegram
+        tg.BackButton.show();
+        
+        // Обработчик нажатия кнопки "Назад"
+        tg.BackButton.onClick(() => {
+            tg.close();
+        });
+        
+        // Получаем данные пользователя
+        const user = tg.initDataUnsafe.user;
+        document.getElementById('user-data').innerHTML = `
+            Вы вошли как: <b>${user?.first_name || 'Неизвестный пользователь'}</b>
+            ${user?.last_name ? `<b>${user.last_name}</b>` : ''}
+            ${user?.username ? `<br>@${user.username}` : ''}
+        `;
+        
+        // Функция для показа alert
+        function showAlert() {
+            tg.showAlert("Это тестовое сообщение из WebApp!");
+        }
+        
+        // Функция для закрытия приложения
+        function closeApp() {
+            tg.close();
+        }
+    </script>
+</body>
+</html>
